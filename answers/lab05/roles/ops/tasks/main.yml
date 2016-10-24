@@ -1,0 +1,24 @@
+---
+- name: Validate Group exists
+  group: name=ciss state=present
+
+- name: Validate CISS users
+  user: name={{ item }} shell=/bin/bash state=present group=ciss
+  with_items:
+  - david
+  - ritesh
+  - travis
+  - kelly
+
+- name: Validate packages
+  apt: name={{ item }} state=installed
+  with_items:
+  - ssh
+  - telnet
+  notify: restart ssh
+
+- name: Validate Services
+  service: name={{ item }} state=running
+  with_items:
+  - ssh
+

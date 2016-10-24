@@ -1,0 +1,9 @@
+---
+- include_vars: spoilers.yml
+
+- name: Put the spoiler text in a remote /tmp/ directory.
+  copy:
+    content="{{spoiler_text}}"
+    dest=/tmp/spoiler_text.txt
+
+

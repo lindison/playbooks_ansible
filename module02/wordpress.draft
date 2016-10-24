@@ -1,0 +1,23 @@
+# Installing WordPress
+
+Target Machines: 
+	development
+User: 
+	Ubuntu
+Connection: 
+	ssh
+
+Software: 
+	python
+	mariadb
+	php
+	wordpress app
+	apache web server
+
+Services:
+	apache2
+	mysql
+
+Users: 
+	Jeff - Admin
+	Jack - Author

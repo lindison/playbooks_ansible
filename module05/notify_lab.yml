@@ -1,0 +1,22 @@
+--- 
+- hosts: redhat
+  remote_user: ubuntu
+  connection: ssh 
+  gather_facts: no
+  become: yes
+  become_method: sudo 
+  vars: 
+  tasks: 
+    - name: Validate httpd is latest build
+      apt: name=apache2 state=latest
+      notify: start httpd
+ 
+    - name: Enable HTTPD service
+      service: name=apache2 enabled=yes
+      register: enabled
+    - debug: var=enabled
+  
+  handlers:
+
+  - name: start httpd
+    service: name=apache state=started

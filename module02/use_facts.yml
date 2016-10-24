@@ -1,0 +1,18 @@
+---
+- hosts: dev
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  vars: 
+  tasks:
+    - name: echo hostname
+      shell: echo {{ ansible_hostname }}
+      register: hostname
+    - debug: var=hostname
+
+    - name: echo OS Family
+      shell: echo {{ ansible_os_family }}
+      register: OS
+    - debug: var=OS

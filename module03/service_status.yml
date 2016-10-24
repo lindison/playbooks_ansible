@@ -1,0 +1,14 @@
+--- # Check multiple services for being started
+- hosts: dev
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  connection: ssh
+  vars:
+  tasks:
+    - name: check if apache is running and start it if it isn't
+      service: name=apache2 state=started
+    - name: check if ssh is running and start it if it isn't
+      service: name=ssh state=started
+    

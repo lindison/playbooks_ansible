@@ -1,0 +1,16 @@
+---
+
+# web
+- hosts: wp-all
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+# lb
+- hosts: haproxy
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  roles:
+    - lb

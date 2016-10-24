@@ -1,0 +1,24 @@
+--- 
+- hosts: dev
+  remote_user: ubuntu
+  connection: ssh
+  become: yes
+  become_method: sudo
+  vars:
+  tasks: 
+    - name: Check that status of multiple packages.
+      apt: name={{ item }} state=installed
+      with_items: 
+      - telnet
+      - sshd
+
+    - name: Check that status of multiple packages.
+      apt: name={{ item }} state=latest
+      with_items:
+      - lynx
+      - tree
+
+    - name: Check that status of multiple packages.
+      apt: name={{ item }} state=absent
+      with_items:
+      - apache2

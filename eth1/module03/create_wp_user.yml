@@ -1,0 +1,12 @@
+---
+- hosts: dev
+  remote_user: ubuntu
+  vars: 
+   wp_author_user: jeff
+   wp_author_email: jeff@email.com
+   wp_author_pass: Passw0rd
+  tasks: 
+    - name: Create a user with the role of author
+      command: sudo wp user create "{{wp_author_user}}" "{{wp_author_email}}" --role='author' --user_pass="{{wp_author_pass}}" --allow-root chdir=/var/www/html
+      become: yes
+      become_user: ubuntu

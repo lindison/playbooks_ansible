@@ -1,0 +1,8 @@
+--- # this is my comment
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: hostname
+      shell: hostname
+      register: hostname
+    - debug: var=hostname

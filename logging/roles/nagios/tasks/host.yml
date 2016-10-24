@@ -1,0 +1,25 @@
+---
+- hosts: rsyslog
+  - name: Check for install dependencies
+    yum: pkg={{ item }} state=installed
+    with_items:
+    - nagios
+    - nagio-plugins*
+    - nagios-devel
+    - httpd
+    - gd
+    - gd-devel
+    - php
+    - gcc
+    - glibc
+    - glibc-common
+    - openssl
+
+  - name: Start and Enable Services
+    service: name={{ item }} state=started enabled=true
+    with_items:
+    - nagios
+    - httpd
+
+  - name: Update sudoers file
+    lineinfile: - lineinfile: "dest=/etc/sudoers state=present regexp='^%nagios' line='nagios ALL=(ALL) NOPASSWD: /usr/lib/nagios/plugins/'"

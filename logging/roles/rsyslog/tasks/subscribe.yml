@@ -1,0 +1,10 @@
+---
+    - name: Register nodes to RH Subscription
+      redhat_subscription: state=present
+                           username="{{ lookup('ini', 'user section=rh_subscription file=/home/stack/playbooks/passwordfile') }}"
+                           password="{{ lookup('ini', 'pass section=rh_subscription file=/home/stack/playbooks/passwordfile') }}"
+    - name: Disable Repos
+      shell: subscription-manager repos --disable=*
+
+    - name: Enable Repos
+      shell: subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-openstack-8-rpms --enable=rhel-7-server-openstack-8-director-rpms --enable rhel-7-server-rh-common-rpms

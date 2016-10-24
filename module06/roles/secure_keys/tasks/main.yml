@@ -1,0 +1,5 @@
+---
+- name: install ssh key
+  authorized_key: user=jenkins
+                  key="{{lookup('file', '/home/ubuntu/lab05/roles/secure_keys/files/authorized_keys') }}"
+                  state=present

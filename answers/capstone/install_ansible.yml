@@ -1,0 +1,15 @@
+---
+# Install Ansible
+- hosts: docker
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  vars:
+  tasks:
+    - name: Validate the Ansible PPA
+      apt_repository: repo='ppa:ansible/ansible'
+
+    - name: Validate Ansible is installed
+      apt: name=ansible state=installed update_cache=yes

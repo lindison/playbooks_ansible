@@ -1,0 +1,38 @@
+---
+- hosts: compute
+    - name: Check if rsyslog is installed on compute nodes
+      yum: pkg=rsyslog state=installed update_cache=True
+
+    - name: Create /etc/rsyslog.d/client.conf
+      shell: echo "*.* @10.0.0.4:514" > /etc/rsyslog.d/client.conf
+
+    - name: Setup /etc/nova/nova.conf for rsyslog
+      shell: "openstack-config --set /etc/nova/nova.conf {{ item }}"
+      with_items:
+      - "DEFAULT debug false"
+      - "DEFAULT use_syslog true"
+      - "DEFAULT syslog_log_facility LOG_LOCAL0"
+
+    - name: Setup /etc/glance/glance-registry.conf for rsyslog
+      shell: "openstack-config --set /etc/glance/glance-registry.conf {{ item }}"
+      with_items:
+      - "DEFAULT debug false"
+      - "DEFAULT use_syslog true"
+      - "DEFAULT syslog_log_facility LOG_LOCAL3"
+
+    - name: Setup /etc/neutron/neutron.conf for rsyslog
+      shell: "openstack-config --set /etc/neutron/neutron.conf {{ item }}"
+      with_items:
+      - "DEFAULT debug false"
+      - "DEFAULT use_syslog true"
+      - "DEFAULT syslog_log_facility LOG_LOCAL5"
+
+    - name: Setup /etc/cinder/cinder.conf for rsyslog
+      shell: "openstack-config --set /etc/cinder/cinder.conf {{ item }}"
+      with_items:
+      - "DEFAULT debug false"
+      - "DEFAULT use_syslog true"
+      - "DEFAULT syslog_log_facility LOG_LOCAL4"
+
+    - name: Restart rsyslog service
+      service: name=rsyslog.service state=restarted enabled=yes

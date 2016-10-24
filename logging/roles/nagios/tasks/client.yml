@@ -1,0 +1,15 @@
+---
+- hosts: openstack
+  - name: Check for install dependencies
+    yum: pkg={{ item }} state=installed
+    with_items:
+    - http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
+    - nagios-plugins*
+    - nrpe
+    - openssl
+
+  - name: Start and Enable Services
+    service: name={{ item }} state=started enabled=true
+    with_items:
+    - nagios
+    - httpd

@@ -1,0 +1,16 @@
+--- # A module that runs the script modules
+    # link: http://docs.ansible.com/ansible/script_module.html
+- hosts: dev
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  tasks: 
+  - script: /home/ubuntu/lab03/system_uptime.sh creates=/home/ubuntu/playbooks/system_uptime.log
+    register: uptime
+  - debug: var=uptime 
+  - name: output uptime
+    shell: cat /home/ubuntu/system_uptime.log
+    register: log
+  - debug: var=log  

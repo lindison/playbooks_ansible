@@ -1,0 +1,4 @@
+---
+- hosts: ceph
+    - name: Check if rsyslog is installed on controller nodes
+      yum: pkg=rsyslog state=installed update_cache=True

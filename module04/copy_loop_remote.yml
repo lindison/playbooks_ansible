@@ -1,0 +1,18 @@
+---
+# this playbook copies a several filss from local to remote
+- hosts: dev01
+  remote_user: ubuntu
+  become: true
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+
+  tasks:
+  - name: create /home/ubuntu/tmp directory
+    file: dest=/home/ubuntu/tmp state=directory owner=ubuntu group=ubuntu
+  - name: copy several files from acs to remote machines
+    copy: src=/home/ubuntu/copy/{{ item }} dest=/home/ubuntu/tmp/{{ item }} owner=ubuntu group=ubuntu mode=0644
+    with_items:
+    - file1
+    - file2
+    - file3

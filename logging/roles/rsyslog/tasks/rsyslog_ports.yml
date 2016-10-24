@@ -1,0 +1,5 @@
+---
+    - name: Ensure UDP 514 is open to receive
+      shell: iptables -I INPUT -m state --state NEW -m udp -p udp --dport 514  -j ACCEPT
+    - name: Restart rsyslog service
+      service: name=rsyslog.service state=restarted enabled=yes

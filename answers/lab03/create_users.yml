@@ -1,0 +1,70 @@
+--- # Create users on remote system
+- hosts: dev
+  remote_user: ubuntu
+  connection: ssh
+  become: yes
+  become_method: sudo
+  vars:
+  tasks:
+    - name: Create developers groups
+      group: name=developers state=present
+    - name: Create users from list
+      user: name={{ item }} group=developers shell=/bin/bash
+      with_items:
+      - devops
+      - jenkins
+      - puppet
+      - ansible 
+    - name: Set passwords devops
+      shell: echo "devops:ubuntu" | chpasswd
+    - name: Set passwords devops
+      shell: echo "jenkins:ubuntu" | chpasswd
+    - name: Set passwords devops
+      shell: echo "puppet:ubuntu" | chpasswd
+    - name: Set passwords devops
+      shell: echo "ansible:ubuntu" | chpasswd
+- hosts: db
+  remote_user: ubuntu
+  connection: ssh
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  vars:
+  tasks:
+    - name: check for dbops group
+      group: name=dbops state=present
+    - name: check for  db-admin user
+      user: name=db-admin group=dbops shell=/bin/bash
+    - name: change password
+      shell: echo "db-admin:ubuntu" | chpasswd 
+- hosts: all
+  remote_user: ubuntu
+  connection: ssh
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  vars:
+  tasks:
+    - name: check if support group exists
+      group: name=support state=present
+    - name: check if ciss-ops exists
+      user: name=ciss-ops group=support state=present shell=/bin/bash
+    - name: update password
+      shell: echo "ciss-ops:ubuntu" | chpasswd 
+
+- hosts: app
+  remote_user: ubuntu
+  connection: ssh
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  vars:
+  tasks:
+    - name: check if webops exists
+      group: name=webops state=present
+    - name: check if webmaster exists 
+      user: name=webmaster state=present group=webops shell=/bin/bash
+    - name: update password
+      shell: echo "webmaster:ubuntu:" | chpasswd 
+
+

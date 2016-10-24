@@ -1,0 +1,20 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  connection: ssh
+  become: yes
+  become_method: sudo
+  vars:
+  tasks: 
+    - name: out current /etc/hosts 
+      shell: cat /etc/hosts
+      register: hosts
+    - debug: var=hosts
+    - name: copy /etc/hosts update script
+      copy: src=/home/ubuntu/playbooks_ansible/prep/etchosts.sh dest=/home/ubuntu owner=ubuntu group=ubuntu mode=0655
+    - name: execute update script
+      shell: bash /home/ubuntu/etchosts.sh
+    - name: out current /etc/hosts
+      shell: cat /etc/hosts
+      register: hosts
+    - debug: var=hosts

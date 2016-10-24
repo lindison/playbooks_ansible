@@ -1,0 +1,16 @@
+---
+- hosts: prod
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+  vars:
+  tasks:
+    - name: Validate use jenkins exists
+      user: name=jenkins state=present 
+
+    - name: install ssh key
+      authorized_key: user=jenkins
+                      key="{{lookup('file', '/home/ubuntu/vault_lab/files/id_rsa.pub') }}"
+                      state=present

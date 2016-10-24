@@ -1,0 +1,7 @@
+---
+# tasks file for rsyslog
+  - include: subscribe.yml
+  - include: control.yml
+  - include: compute.yml
+  - include: ceph.yml
+  - include: rsyslog_ports.yml

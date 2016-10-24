@@ -1,0 +1,12 @@
+--- # Playbook demonstration of authorize_key module    
+- hosts: dev 
+  gather_facts: no  
+  remote_user: ubuntu
+  connection: ssh  
+  tasks:  
+    - name: install ssh key    
+      authorized_key: 
+          user: ubuntu 
+          key: "{{lookup('file', '/home/ubuntu/.ssh/id_rsa.pub') }}" 
+          state: present
+

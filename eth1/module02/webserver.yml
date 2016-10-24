@@ -1,0 +1,39 @@
+--- # Outline to playbook transation
+- hosts: dev
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+  tasks:  
+  - name: date/time stamp for when the playbook starts
+    command: /bin/date
+    register: timestamp_start
+  - debug: var=timestamp_start
+
+  - name: install apache webserver
+    apt: name=apache2 state=latest
+    notify: enable apache2
+    notify: start apache2
+
+  - name: verify that the webservice is running
+    shell: service apache2 status
+    register: result
+  - debug: var=result
+
+  - name: install telnet software
+    apt: name=telnet state=latest
+ 
+  - name: install lynx
+    apt: name=lynx state=latest
+
+  - name: date/time stamp for when the playbook ends
+    command: /bin/date
+    register: timestamp_stop
+  - debug: var=timestamp_stop
+
+  handlers:
+  - name: enable apache2
+    service: name=apache2 enabled=yes
+  - name: start apache2
+    service: name=apache2 state=restarted

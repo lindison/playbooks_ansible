@@ -1,0 +1,15 @@
+--- # This playbook uses a loop to copy multiple files from local to remote
+- hosts: dev
+  remote_user: ubuntu
+  become: no
+  gather_facts: no
+  vars: 
+  tasks: 
+    - name: check if /home/ubuntu/tmp exists on remote machine
+      file: dest=/home/ubuntu/tmp owner=ubuntu group=ubuntu state=directory
+    - name: copy files from /home/ubuntu/copy/ to remote machine
+      copy: src=/home/ubuntu/copy/{{ item }} dest=/home/ubuntu/tmp/copy-{{ item }} owner=ubuntu group=ubuntu mode=0644
+      with_items: 
+      - file1
+      - file2
+      - file3

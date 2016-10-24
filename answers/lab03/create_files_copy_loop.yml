@@ -1,0 +1,30 @@
+--- # Create files locally, copy files remotely
+- hosts: localhost
+  connection: local
+  remote_user: ubuntu
+  gather_facts: no
+  vars:
+  tasks: 
+    - name: create local directory
+      file: dest=/home/ubuntu/copy state=directory owner=ubuntu group=ubuntu
+    - name: create file1-3
+      file: dest=/home/ubuntu/copy/{{ item }} state=touch owner=ubuntu group=ubuntu
+      with_items:
+      - file1
+      - file2
+      - file3
+
+- hosts: dev
+  remote_user: ubuntu
+  become: no
+  gather_facts: no
+  vars: 
+  tasks: 
+    - name: check if /home/ubuntu/tmp exists on remote machine
+      file: dest=/home/ubuntu/tmp owner=ubuntu group=ubuntu state=directory
+    - name: copy files from /home/ubuntu/copy/ to remote machine
+      copy: src=/home/ubuntu/copy/{{ item }} dest=/home/ubuntu/tmp/copy-{{ item }} owner=ubuntu group=ubuntu mode=0644
+      with_items: 
+      - file1
+      - file2
+      - file3

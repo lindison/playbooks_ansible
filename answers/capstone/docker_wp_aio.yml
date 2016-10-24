@@ -1,0 +1,15 @@
+# docker things
+- hosts: docker
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  connection: ssh
+  tasks:
+
+   - name: start wordpress all-in-ine
+     docker:
+          name: wordpressaio
+          image: s5atrain/wordpress:aio
+          ports: "8082:80"
+          state: started

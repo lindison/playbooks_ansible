@@ -1,0 +1,14 @@
+---
+- hosts: dev
+  remote_user: ubuntu
+  connection: ssh
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+  vars:
+  tasks:
+    - name: Display all variables/facts known for a host
+      debug: var=hostvars[inventory_hostname] verbosity=4
+
+    - debug: msg="System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}"
+      when: ansible_default_ipv4.gateway is defined
